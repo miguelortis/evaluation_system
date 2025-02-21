@@ -5,11 +5,14 @@ import { Button, Card, Col, Divider, Row, Typography } from "antd";
 import useAlert from "../hooks/useAlert";
 import useQuery from "../hooks/useQuery";
 import DinamicInput from "../components/DinamicInput/DinamicInput";
+import { convertArrayToObject } from "../utils/convert-array-to-object";
 import { getEvaluationById } from "../redux/actions/evaluationActions";
 import { EVALUATION_BY_ID_RESET } from "../redux/constants/evaluationConstants";
-import { evaluationResponseRegister } from "../redux/actions/evaluationResponseActions";
+import {
+  evaluationResponseRegister,
+  getEvaluationResponse,
+} from "../redux/actions/evaluationResponseActions";
 import { NEW_EVALUATION_RES_RESET } from "../redux/constants/evaluationResponseConstants";
-import { convertArrayToObject } from "../utils/convert-array-to-object";
 
 const { Title } = Typography;
 
@@ -34,24 +37,29 @@ const EvaluationResponse = () => {
     evaluationByIdListSuccess,
     evaluationByIdListError,
   } = useSelector((state) => state.evaluationById);
+  const {
+    evaluationResponseByEvaluationIdData,
+    evaluationResponseByEvaluationIdSuccess,
+  } = useSelector((state) => state.evaluationResponseByEvaluationId);
   const { authData } = useSelector((state) => state.currentUser);
 
   useEffect(() => {
     dispatch(getEvaluationById(id));
-
     return () => {
       dispatch({ type: EVALUATION_BY_ID_RESET });
     };
   }, []);
   useEffect(() => {
     if (evaluationByIdListSuccess) {
-      setEvaluation(evaluationByIdListData);
-      setAssigned(
-        evaluationByIdListData.assignedUsers.find(
-          (item) => item.user === authData._id
-        )
+      const user = evaluationByIdListData.assignedUsers.find(
+        (item) => item.user === authData._id
       );
+      setEvaluation(evaluationByIdListData);
+      setAssigned(user);
       setResponses(convertArrayToObject(evaluationByIdListData.fields));
+      if (user.status === "completed") {
+        dispatch(getEvaluationResponse(evaluationByIdListData._id));
+      }
     }
   }, [evaluationByIdListSuccess]);
   useEffect(() => {
@@ -80,6 +88,11 @@ const EvaluationResponse = () => {
       });
     }
   }, [evaluationResponseError]);
+  useEffect(() => {
+    if (evaluationResponseByEvaluationIdSuccess) {
+      setResponses(evaluationResponseByEvaluationIdData.responses);
+    }
+  }, [evaluationResponseByEvaluationIdSuccess]);
 
   const handleSave = () => {
     const data = {
@@ -117,25 +130,35 @@ const EvaluationResponse = () => {
               }}
               key={i}
             >
-              <DinamicInput
-                disabled={
-                  evaluationResponseLoading || assigned?.status === "completed"
-                }
-                label={field.label}
-                type={field.type}
-                style={{ width: "100%" }}
-                options={field.options}
-                placeholder="Respuesta..."
-                onChange={(e) => {
-                  const responseList = responses;
-                  if (e.target) {
-                    responseList[field.id] = e.target.value;
-                  } else {
-                    responseList[field.id] = e;
-                  }
-                  setResponses(responseList);
-                }}
-              />
+              {assigned?.status === "completed" ? (
+                <DinamicInput
+                  disabled
+                  value={responses[field.id]}
+                  label={field.label}
+                  type={field.type}
+                  style={{ width: "100%" }}
+                  options={field.options}
+                  placeholder="Sin respuesta"
+                />
+              ) : (
+                <DinamicInput
+                  disabled={evaluationResponseLoading}
+                  label={field.label}
+                  type={field.type}
+                  style={{ width: "100%" }}
+                  options={field.options}
+                  placeholder="Respuesta..."
+                  onChange={(e) => {
+                    const responseList = responses;
+                    if (e.target) {
+                      responseList[field.id] = e.target.value;
+                    } else {
+                      responseList[field.id] = e;
+                    }
+                    setResponses(responseList);
+                  }}
+                />
+              )}
             </Col>
           );
         })}

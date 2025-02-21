@@ -8,7 +8,10 @@ import {
   updateEvaluationReducer,
 } from "./reducers/evaluationReducer";
 import { employeeUserListReducer } from "./reducers/userReducer";
-import { evaluationResponseReducer } from "./reducers/evaluationResponseReducer";
+import {
+  evaluationResponseByEvaluationIdReducer,
+  evaluationResponseReducer,
+} from "./reducers/evaluationResponseReducer";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +24,7 @@ const store = configureStore({
     assignedEvaluationsByEmployeeList: assignedEvaluationsByEmployeeListReducer,
     evaluationById: evaluationByIdReducer,
     evaluationResponse: evaluationResponseReducer,
+    evaluationResponseByEvaluationId: evaluationResponseByEvaluationIdReducer,
   },
 });
 
