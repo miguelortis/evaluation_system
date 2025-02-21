@@ -12,7 +12,7 @@
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/evaluation-system.git
+   git clone https://github.com/miguelortis/evaluation_system-api.git
    ```
 2. Navega al directorio del proyecto:
    ```bash
