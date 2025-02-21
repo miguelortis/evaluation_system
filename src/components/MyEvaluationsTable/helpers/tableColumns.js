@@ -5,6 +5,11 @@ export const myEvaluationsTableColumns = [
     key: "name",
   },
   {
+    title: "Estado",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
     title: "Fecha de creación",
     dataIndex: "date",
     key: "date",

@@ -22,6 +22,7 @@ const EvaluationResponse = () => {
 
   const [evaluation, setEvaluation] = useState({ name: "", fields: [] });
   const [responses, setResponses] = useState({});
+  const [assigned, setAssigned] = useState({});
 
   const {
     evaluationResponseSuccess,
@@ -33,6 +34,7 @@ const EvaluationResponse = () => {
     evaluationByIdListSuccess,
     evaluationByIdListError,
   } = useSelector((state) => state.evaluationById);
+  const { authData } = useSelector((state) => state.currentUser);
 
   useEffect(() => {
     dispatch(getEvaluationById(id));
@@ -44,6 +46,11 @@ const EvaluationResponse = () => {
   useEffect(() => {
     if (evaluationByIdListSuccess) {
       setEvaluation(evaluationByIdListData);
+      setAssigned(
+        evaluationByIdListData.assignedUsers.find(
+          (item) => item.user === authData._id
+        )
+      );
       setResponses(convertArrayToObject(evaluationByIdListData.fields));
     }
   }, [evaluationByIdListSuccess]);
@@ -72,7 +79,7 @@ const EvaluationResponse = () => {
         message: evaluationResponseError,
       });
     }
-  }, [evaluationResponseSuccess]);
+  }, [evaluationResponseError]);
 
   const handleSave = () => {
     const data = {
@@ -111,7 +118,9 @@ const EvaluationResponse = () => {
               key={i}
             >
               <DinamicInput
-                disabled={evaluationResponseLoading}
+                disabled={
+                  evaluationResponseLoading || assigned?.status === "completed"
+                }
                 label={field.label}
                 type={field.type}
                 style={{ width: "100%" }}
@@ -133,13 +142,23 @@ const EvaluationResponse = () => {
       </Row>
       <Row justify="center">
         <Col span={24} style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            loading={evaluationResponseLoading}
-            type="primary"
-            onClick={() => handleSave()}
-          >
-            Enviar Respuestas
-          </Button>
+          {evaluationResponseLoading || assigned?.status === "completed" ? (
+            <Button
+              loading={evaluationResponseLoading}
+              type="primary"
+              onClick={() => navigate(`/evaluations/my`)}
+            >
+              Volver
+            </Button>
+          ) : (
+            <Button
+              loading={evaluationResponseLoading}
+              type="primary"
+              onClick={() => handleSave()}
+            >
+              Enviar Respuestas
+            </Button>
+          )}
         </Col>
       </Row>
     </Card>

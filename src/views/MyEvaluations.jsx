@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import MyEvaluationsTable from "../components/MyEvaluationsTable/MyEvaluationTable";
 import { getAssignedEvaluationsByEmployeeId } from "../redux/actions/evaluationActions";
 import { ASSIGNED_EVALUATIONs_BY_EMPLOYEE_LIST_RESET } from "../redux/constants/evaluationConstants";
+import { getLabelByStatus } from "../utils/formatters/get-label-by-status";
 
 const MyEvaluations = () => {
   const dispatch = useDispatch();
@@ -31,12 +32,13 @@ const MyEvaluations = () => {
       setEvaluationList(
         assignedEvaluationsByEmployeeListData.map((item, i) => ({
           key: i,
-          name: item.name,
+          name: item?.name,
           date: format(new Date(item?.createdAt), "dd/MM/yyyy"),
+          status: getLabelByStatus(item?.assignedUsers?.status),
           actions: (
             <Button
               icon={<EditOutlined />}
-              onClick={() => navigate(`/evaluations/response?id=${item._id}`)}
+              onClick={() => navigate(`/evaluations/response?id=${item?._id}`)}
             />
           ),
         }))
