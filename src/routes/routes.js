@@ -11,6 +11,7 @@ import Dashboard from "../views/DashboardView";
 import Evaluations from "../views/EvaluationsView";
 import NewEvaluation from "../views/NewEvaluationView";
 import MyEvaluations from "../views/MyEvaluations";
+import EvaluationResponse from "../views/EvaluationResponse";
 
 const routes = [
   {
@@ -52,6 +53,14 @@ const routes = [
         component: MyEvaluations,
         roles: [roles.ADMIN, roles.MANAGER, roles.EMPLOYEE],
         icon: OrderedListOutlined,
+      },
+      {
+        name: "RESPUESTA DE EVALUACION",
+        path: "/evaluations/response",
+        component: EvaluationResponse,
+        roles: [roles.ADMIN, roles.MANAGER, roles.EMPLOYEE],
+        icon: OrderedListOutlined,
+        isHidden: true,
       },
     ],
   },

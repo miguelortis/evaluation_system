@@ -15,6 +15,9 @@
   .layout-dashboard .header-control .sidebar-toggler {
     display: none;
   }
+  .layout-dashboard {
+    overflow: auto;
+  }
 }
 
 @media (min-width: 768px) {
@@ -72,5 +75,41 @@
   }
   .layout-dashboard.layout-dashboard-rtl .header-control {
     justify-content: flex-end;
+  }
+}
+@media (min-width: 768px) {
+  /* .sign-img img {
+    margin: 0;
+  } */
+  .card-signup {
+    margin-bottom: 120px;
+  }
+  .card-signup .sign-up-gateways .ant-btn {
+    width: 100px;
+  }
+}
+@media (min-width: 1200px) {
+  .ant-col.col-img img {
+    height: 196px;
+  }
+}
+@media (max-width: 1024px) {
+  .bar-chart {
+    max-width: 100%;
+  }
+  .full-width {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  /* .sign-img img {
+    margin: 0;
+  } */
+  .card-signup {
+    margin-bottom: 120px;
+  }
+  .card-signup .sign-up-gateways .ant-btn {
+    width: 100px;
   }
 }

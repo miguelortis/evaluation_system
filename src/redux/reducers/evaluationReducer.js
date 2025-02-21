@@ -3,6 +3,10 @@ import {
   ASSIGNED_EVALUATIONs_BY_EMPLOYEE_LIST_REQUEST,
   ASSIGNED_EVALUATIONs_BY_EMPLOYEE_LIST_RESET,
   ASSIGNED_EVALUATIONs_BY_EMPLOYEE_LIST_SUCCESS,
+  EVALUATION_BY_ID_ERROR,
+  EVALUATION_BY_ID_REQUEST,
+  EVALUATION_BY_ID_RESET,
+  EVALUATION_BY_ID_SUCCESS,
   EVALUATION_LIST_ERROR,
   EVALUATION_LIST_REQUEST,
   EVALUATION_LIST_RESET,
@@ -122,6 +126,33 @@ export const assignedEvaluationsByEmployeeListReducer = (
         assignedEvaluationsByEmployeeListLoading: false,
       };
     case ASSIGNED_EVALUATIONs_BY_EMPLOYEE_LIST_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const evaluationByIdReducer = (state = {}, action) => {
+  switch (action.type) {
+    case EVALUATION_BY_ID_REQUEST:
+      return {
+        evaluationByIdData: null,
+        evaluationByIdLoading: true,
+        evaluationByIdListError: null,
+      };
+    case EVALUATION_BY_ID_SUCCESS:
+      return {
+        evaluationByIdListData: action.payload,
+        evaluationByIdListSuccess: true,
+        evaluationByIdListLoading: false,
+        evaluationByIdListError: null,
+      };
+    case EVALUATION_BY_ID_ERROR:
+      return {
+        evaluationByIdListError: action.payload,
+        evaluationByIdListLoading: false,
+      };
+    case EVALUATION_BY_ID_RESET:
       return {};
     default:
       return state;

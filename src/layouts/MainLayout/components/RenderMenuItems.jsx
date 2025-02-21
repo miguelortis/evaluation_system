@@ -3,6 +3,9 @@ import { NavLink } from "react-router";
 
 const RenderMenuItems = (routes, setName, parentKey = "") => {
   return routes.map((route, index) => {
+    if (route.isHidden) {
+      return null;
+    }
     const Icon = route.icon;
     const currentKey = parentKey ? `${parentKey}-${index}` : `${index}`;
     if (route.items) {

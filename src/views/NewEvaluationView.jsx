@@ -128,7 +128,7 @@ const NewEvaluation = () => {
             <Button
               loading={evaluationLoading}
               type="primary"
-              onClick={() => handleSave(true)}
+              onClick={() => handleSave()}
             >
               Guardar Evaluación
             </Button>
