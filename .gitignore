@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # dotenv environment variable files
+env
 .env
 .env.development.local
 .env.test.local
