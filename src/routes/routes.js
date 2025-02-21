@@ -12,6 +12,7 @@ import Evaluations from "../views/EvaluationsView";
 import NewEvaluation from "../views/NewEvaluationView";
 import MyEvaluations from "../views/MyEvaluations";
 import EvaluationResponse from "../views/EvaluationResponse";
+import Profile from "../views/Profile";
 
 const routes = [
   {
@@ -24,7 +25,7 @@ const routes = [
   {
     name: "PERFIL",
     path: "/profile",
-    component: Dashboard,
+    component: Profile,
     roles: [roles.ADMIN, roles.MANAGER, roles.EMPLOYEE],
     icon: UserOutlined,
   },
